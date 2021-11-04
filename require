@@ -1,0 +1,9 @@
+test_server 먼저 실행
+ 
+test_create BCON에 생성된 NFT 값 확인후 변수로 변경해주고 실행해야함
+-> test_cancel 비딩없는 상태의 옥션에서만 실행가능, 옥션id 변수로 넣어줘야함
+
+
+test_create 
+-> test_bidding 옥션id, NFT 값 변수로 넣어줘야함
+-> test_done 옥션id, NFT 값 변수로 넣어줘야함
