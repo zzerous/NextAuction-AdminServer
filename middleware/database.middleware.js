@@ -14,9 +14,9 @@ async function createMysqlClient() {
 }
 createMysqlClient();
 
-async function writeAuctionInfo(auctionID, auctionMeta, token) {
+async function createAuction(auctionID, auctionMeta, token) {
     try {
-        console.log(auctionID)
+        console.log('auctionID:',auctionID)
         const [results] = await connection.execute(
             "INSERT INTO auction_info (auction_id, valid_time, valid_key, nft, user_addr,status) VALUES(?,?,?,?,?,?)",
             [auctionID, token.valid_time, token.valid_key, auctionMeta.nft, auctionMeta.owner, 1]
@@ -32,7 +32,8 @@ async function writeAuctionInfo(auctionID, auctionMeta, token) {
     }
 }
 
-async function deleteAuctionInfo(auctionID) {
+
+async function endAuction(auctionID) {
     try {
         const [result] = await connection.execute(
             "UPDATE auction_info SET status = 0 WHERE auction_id =?",
@@ -59,7 +60,6 @@ async function deleteAuctionInfo(auctionID) {
 async function getAuctionInfo(auctionID) {
     try {
         const [rows] = await connection.execute('SELECT * FROM auction_info WHERE auction_id = ?', [auctionID]);
-        console.log(rows[0])
         if (rows[0] == undefined) return -1
         else return rows[0]
     } catch (e) {
@@ -69,12 +69,9 @@ async function getAuctionInfo(auctionID) {
 
 }
 
-
 async function getCurrentBuyer(nft) {
     try {
         const [rows] = await connection.execute('SELECT * FROM buyer_info WHERE nft = ?', [nft]);
-        console.log('getBuyer')
-        console.log(rows)
         return {
             isExist: rows.length > 0,
             buyers: rows
@@ -90,7 +87,7 @@ async function getCurrentBuyer(nft) {
 async function updateBuyer(nft, address, did, keyID, sig, sigData, amount, isExist) {
     if (isExist) {
         try {
-            const result = await connection.execute(
+            await connection.execute(
                 "UPDATE auction.buyer_info SET user_addr=?, user_did=?, key_id=?, content_sig=?, str_contentmeta=?, bid_amount=? WHERE nft =?",
                 [address, did, keyID, sig, sigData, amount, nft]
             );
@@ -98,6 +95,7 @@ async function updateBuyer(nft, address, did, keyID, sig, sigData, amount, isExi
                 status: 1
             }
         } catch (e) {
+            console.log(e)
             return {
                 status: -1,
                 err: e
@@ -123,8 +121,8 @@ async function updateBuyer(nft, address, did, keyID, sig, sigData, amount, isExi
 
 
 module.exports = {
-    writeAuctionInfo,
-    deleteAuctionInfo,
+    createAuction,
+    endAuction,
     getAuctionInfo,
     getCurrentBuyer,
     updateBuyer
