@@ -1,5 +1,5 @@
 module.exports = {
-    HOST: "127.0.0.1",
+    HOST: "203.250.77.120",
     USER: "pslab",
     PASSWORD: "pslab",
     DATABASE: "auction"

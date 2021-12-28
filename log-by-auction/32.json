@@ -1,0 +1,31 @@
+{
+    "auciton-nft": 32,
+    "seller": "0x180150aa48b9ebae77e569eacc31c807f81d2031",
+    "start-time": "2021-12-14T03:15:30.904Z",
+    "auciton-meta": {
+        "nft": 32,
+        "name": "auction_feed.jpg",
+        "minPrice": 0,
+        "timestamp": 1637825772,
+        "desc": "THIS IS AUCTION",
+        "contentOwner": "0x180150aa48b9ebae77e569eacc31c807f81d2031",
+        "contentCreator": "0x180150aa48b9ebae77e569eacc31c807f81d2031",
+        "owner": "0x180150aa48b9ebae77e569eacc31c807f81d2031"
+    },
+    "history": [
+        "[125][Bidding][0xd8648d669a52aa6807511c9e668de61ccad3b4df][start: bidding, amount 0]",
+        "[125][Bidding][0xd8648d669a52aa6807511c9e668de61ccad3b4df][get auction info...]",
+        "[125][Bidding][0xd8648d669a52aa6807511c9e668de61ccad3b4df][buyer did-auth: success]",
+        "[125][Bidding][0xd8648d669a52aa6807511c9e668de61ccad3b4df][get current buyer in local db]",
+        "[125][Bidding][0xd8648d669a52aa6807511c9e668de61ccad3b4df][update latest bidding in local db]",
+        "[125][Bidding][0xd8648d669a52aa6807511c9e668de61ccad3b4df][bidding operation in auction contract ]",
+        "[125][Bidding][0xd8648d669a52aa6807511c9e668de61ccad3b4df][bidding success-end ]",
+        "[125][Bidding][0xd8648d669a52aa6807511c9e668de61ccad3b4df][start: bidding, amount 0]",
+        "[125][Bidding][0xd8648d669a52aa6807511c9e668de61ccad3b4df][get auction info...]",
+        "[125][Bidding][0xd8648d669a52aa6807511c9e668de61ccad3b4df][buyer did-auth: success]",
+        "[125][Bidding][0xd8648d669a52aa6807511c9e668de61ccad3b4df][get current buyer in local db]",
+        "[125][Bidding][0xd8648d669a52aa6807511c9e668de61ccad3b4df][update latest bidding in local db]",
+        "[125][Bidding][0xd8648d669a52aa6807511c9e668de61ccad3b4df][bidding operation in auction contract ]",
+        "[125][Bidding][0xd8648d669a52aa6807511c9e668de61ccad3b4df][bidding success-end ]"
+    ]
+}

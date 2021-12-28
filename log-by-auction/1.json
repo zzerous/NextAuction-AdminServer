@@ -1,0 +1,16 @@
+{
+    "auciton-nft": 1,
+    "seller": "0x180150aa48b9ebae77e569eacc31c807f81d2031",
+    "start-time": "2021-12-14T04:26:41.011Z",
+    "auciton-meta": {
+        "nft": 1,
+        "name": "test1.jpg",
+        "minPrice": 0,
+        "timestamp": 1637826772,
+        "desc": "THIS IS AUCTION",
+        "contentOwner": "0x180150aa48b9ebae77e569eacc31c807f81d2031",
+        "contentCreator": "0x180150aa48b9ebae77e569eacc31c807f81d2031",
+        "owner": "0x180150aa48b9ebae77e569eacc31c807f81d2031"
+    },
+    "history": []
+}

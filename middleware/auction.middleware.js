@@ -1,6 +1,6 @@
 const BAOBAB_RPC_URL = 'https://api.baobab.klaytn.net:8651/';
 const BCON_SERVER = 'http://203.250.77.120:8000/';
-const LOCAL_AUCTION_SERVER = 'http://203.250.77.152:3002'
+const LOCAL_AUCTION_SERVER = 'http://127.0.0.1:3002'
 
 const CONTRACTS = require('../config/auction.contracts');
 const AUCTION = require('../config/auction.account');
@@ -18,6 +18,7 @@ const contentContract = new caver.contract(CONTRACTS.DEPLOYED_ABI_CONTENT, CONTR
 /*lib*/
 const transactions = require('../lib/transactions');
 const request = require('request');
+
 
 
 async function _genRawTX(_to, _data) {
@@ -48,7 +49,7 @@ async function startMonitoring(auctionID, auctionInfo, jwt) {
         headers: {
           'content-type': 'application/json'
         },
-        url: `${LOCAL_AUCTION_SERVER}/end-auction`, //니서버
+        url: LOCAL_AUCTION_SERVER+'/end-auction', //`, //니서버  '${LOCAL_AUCTION_SERVER}/end-auction'
         body: {
           'auctionID': auctionID,
           'nft': nft
@@ -56,7 +57,8 @@ async function startMonitoring(auctionID, auctionInfo, jwt) {
         json: true
 
       }, function (error, res, body) {
-        console.log(error);
+        console.log('@@@@');
+        console.log(body);
       });
     } else {
       console.log('check auction state...');
@@ -81,6 +83,7 @@ async function startAuction(auctionMeta) {
             CONTRACTS.DEPLOYED_ADDRESS_NFT
         ).encodeABI()
     )
+
     const rlpTXResult = await transactions.sendingRLPTx("createAucFD", metaRawTX); //non-replication
     return rlpTXResult;
 }
@@ -99,8 +102,14 @@ async function sendLastBidding(auctionID) {
 
 
 async function changeOwnerCert(newOwnerCert, buyerAddr) {
+    console.log('@@@@@@@@@@@@@@@@@@@@@@ midedle ware  @@@@@@@@@@@@@');
+    console.log(newOwnerCert);
+    console.log(buyerAddr);
+    console.log(CONTRACTS.DEPLOYED_ADDRESS_NFT);
+
+
     const metaRawTX = await _genRawTX(
-        CONTRACTS.DEPLOYED_ADDRESS,
+        CONTRACTS.DEPLOYED_ADDRESS_CONTENT,
         contentContract.methods.changeOwnershipCert(
             newOwnerCert.NFT,
             newOwnerCert.ownerDID,
@@ -108,9 +117,11 @@ async function changeOwnerCert(newOwnerCert, buyerAddr) {
             newOwnerCert.issueTime,
             buyerAddr, //buyer address
             CONTRACTS.DEPLOYED_ADDRESS_NFT
-        ).encodeABI()
+        ).encodeABI() 
     );
+
     const rlpTXResult = await transactions.sendingRLPTx("changeCertFD", metaRawTX); //non-replication
+    console.log(rlpTXResult);
     console.log('FD_CHANGE_CERT    ' + rlpTXResult);
     return rlpTXResult;
 }
@@ -122,6 +133,7 @@ async function doneAuction(auctionID) {
     );
     const rlpTXResult = await transactions.sendingRLPTx("aucDoneFD", metaRawTX); //non-replication
     console.log('FD_AUC_DONE    ' + rlpTXResult);
+    console.log(rlpTXResult);
     return rlpTXResult;
 }
 
@@ -140,6 +152,7 @@ async function bidding(rawTX) {
 
 async function checkValidDelegation(nft) {
     const cert = await contentContract.methods.getOwnershipCert(nft).call();
+    console.log(cert)
     const delegate = cert.delegations.account.toLowerCase();
     if (delegate != AUCTION.ADDRESS) return false;
     else return true;
@@ -181,9 +194,17 @@ async function printAuctionEnd(auctionID) {
 
 
 function isEqualSeller(auction, buyer) {
-    return (buyer == auction.user_addr)
+    return (buyer == auction.user_addr);
 }
 
+function isBiggerthanLast(auction, amount) {
+    return (amount < auction.bid_amount);
+}
+
+async function isNotExpired(auction){
+    const res = await jwt.verifyJWT(auction.valid_time, auction.valid_key);
+    return (res);
+}
 
 async function getAuctionID(nft) {
     try {
@@ -263,7 +284,7 @@ async function requestDoneAuction(auctionID) {
         },
         json: true
     }, function (error, res, body) {
-        console.log('send to local server:', '/done-auction');
+        console.log(' server:', '/done-auction');
         console.log(error);
     });
 }
@@ -283,6 +304,8 @@ module.exports = {
     isContentOwner,
     isAuctionEnd,
     isEqualSeller,
+    isBiggerthanLast,
+    isNotExpired,
     getAuctionID,
     getOldOwnerCert,
     printAuctionEnd,

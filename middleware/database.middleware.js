@@ -85,6 +85,7 @@ async function getCurrentBuyer(nft) {
 
 
 async function updateBuyer(nft, address, did, keyID, sig, sigData, amount, isExist) {
+
     if (isExist) {
         try {
             await connection.execute(
